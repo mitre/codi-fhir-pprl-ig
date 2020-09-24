@@ -2,7 +2,7 @@ Profile: PPRLPatient
 Parent: http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient
 Id: pprl-patient
 Title: "PPRL Patient"
-Description: "A patient with the requirements of the PPRL hashing system."
+Description: "A patient with the requirements for Privacy Preserving Record Linkage (PPRL)."
 
 * birthDate 1..1	// Makes birthdate mandatory
 * extension[birthsex] 1..1	// Makes birthsex mandatory
