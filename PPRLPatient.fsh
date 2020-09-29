@@ -10,8 +10,6 @@ Description: "A patient with the requirements for Privacy Preserving Record Link
 * id 1..1						// makes the patient id mandatory
 * name.given 1..* 				// name is already [1..*]
 * name.family 1..1
-* extension contains
-	insuranceNumber 1..1 		// PROBABLY WRONG, not within USCorePatient. Also this doesn't specify that it should be a string/valuetype (not sure how to do so for an extension).
 * contact 1..* 					// Makes the contact field mandatory
 * contact.name 1..1 			// Makes the contact name mandatory
 * contact.name.given 1..*
@@ -41,19 +39,19 @@ Description: "A patient with the requirements for Privacy Preserving Record Link
 
 /*
  	---A Patient that meets the PPRL Requirements must have the following attributes:
- 1) Birthdate	(within USCorePatient as birthDate [0..1])
- 2) Gender	(Within USCorePatient as "birthsex" with cardinality [0..1], also as "gender" with cardinality [1..1])
+ 1) Birthdate		(within USCorePatient as birthDate [0..1])
+ 2) Gender			(Within USCorePatient as "birthsex" with cardinality [0..1], also as "gender" with cardinality [1..1])
  3) IDENTIFIERID	(Within USCorePatient as "identifier.id" with cardinality [0..1])
- 4) PATID	(Within USCorePatient as "id" with cardinality [0..1])
- 5) GIVEN_NAME (Within USCorePatient as "name.given" with cardinality [0..*])
+ 4) PATID			(Within USCorePatient as "id" with cardinality [0..1])
+ 5) PARENT_GIVEN_NAME	(Within USCorePatient as "name.given" with cardinality [0..*])
  6) PARENT_FAMILY_NAME 	(Within USCorePatient as "name.family" with cardinality [0..1])
  7) MIDDLE_INITIAL	(Not within USCorePatient, but is implied in givenName)
- 8) INSURANCE_NUMBER	(Not within USCorePatient)
+ 8) INSURANCE_NUMBER	(REMOVED) (Not within USCorePatient, we have removed this requirement)
  9) PARENT_GIVEN_NAME	(Within USCorePatient as "contact.name.family" with cardinality [0..1])
  10) PARENT_FAMILY_NAME	(Within USCorePatient as "contact.name.given" with cardinality [0..1])
- 11) HOUSEHOLD_STREET_ADDRESS (Within USCorePatient as "address.line" with cardinality [0..1])
- 12) HOUSEHOLD_ZIP (Within USCorePatient as "address.postalcode" with cardinality [0..1])
- 13) HOUSEHOLD_PHONE (Within USCorePatient as "telecom.*")
- 15) HOUSEHOLD_EMAIL (Within USCorePatient as "telecom.*")
- 16) LINK.ID (Not within USCorePatient and cannot be mandatory since the patient won't initially have one until after PPRL runs)
+ 11) HOUSEHOLD_STREET_ADDRESS	(Within USCorePatient as "address.line" with cardinality [0..1])
+ 12) HOUSEHOLD_ZIP	(Within USCorePatient as "address.postalcode" with cardinality [0..1])
+ 13) HOUSEHOLD_PHONE	(Within USCorePatient as "telecom.*")
+ 15) HOUSEHOLD_EMAIL	(Within USCorePatient as "telecom.*")
+ 16) LINK.ID 		(Not within USCorePatient and cannot be mandatory since the patient won't initially have one until after PPRL runs)
 */
