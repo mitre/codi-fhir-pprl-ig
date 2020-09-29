@@ -6,7 +6,7 @@
   "name": "PPRLPatient",
   "title": "PPRL Patient",
   "status": "active",
-  "description": "A patient with the requirements of the PPRL hashing system.",
+  "description": "A patient with the requirements for Privacy Preserving Record Linkage (PPRL).",
   "fhirVersion": "4.0.1",
   "mapping": [
     {
@@ -93,7 +93,40 @@
       {
         "id": "Patient.telecom",
         "path": "Patient.telecom",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "pattern",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        },
         "min": 2
+      },
+      {
+        "id": "Patient.telecom:phoneNumber",
+        "path": "Patient.telecom",
+        "sliceName": "phoneNumber",
+        "min": 1,
+        "max": "*"
+      },
+      {
+        "id": "Patient.telecom:phoneNumber.system",
+        "path": "Patient.telecom.system",
+        "patternCode": "phone"
+      },
+      {
+        "id": "Patient.telecom:emailAddress",
+        "path": "Patient.telecom",
+        "sliceName": "emailAddress",
+        "min": 1,
+        "max": "*"
+      },
+      {
+        "id": "Patient.telecom:emailAddress.system",
+        "path": "Patient.telecom.system",
+        "patternCode": "email"
       },
       {
         "id": "Patient.birthDate",
@@ -134,13 +167,11 @@
       {
         "id": "Patient.contact.name.given",
         "path": "Patient.contact.name.given",
-        "min": 1,
-        "max": "1"
+        "min": 1
       },
       {
         "id": "Patient.link",
         "path": "Patient.link",
-        "min": 1,
         "max": "1"
       },
       {

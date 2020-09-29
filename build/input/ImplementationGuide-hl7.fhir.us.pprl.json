@@ -53,7 +53,7 @@
           "reference": "StructureDefinition/pprl-patient"
         },
         "name": "PPRL Patient",
-        "description": "A patient with the requirements of the PPRL hashing system.",
+        "description": "A patient with the requirements for Privacy Preserving Record Linkage (PPRL).",
         "exampleBoolean": false
       }
     ],
