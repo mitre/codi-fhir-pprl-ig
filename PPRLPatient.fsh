@@ -6,24 +6,25 @@ Description: "A patient with the requirements for Privacy Preserving Record Link
 
 * birthDate 1..1				// Makes birthdate mandatory
 * extension[birthsex] 1..1		// Makes birthsex mandatory
-* identifier.id 1..1 			// identifier is already [1..*]
+* identifier.id 1..1			// identifier is already [1..*]
 * id 1..1						// makes the patient id mandatory
-* name.given 1..* 				// name is already [1..1]
-* name.family 1..1 				// name is already [1..1]
-//* name.middle 0..1 			// Not within HumanName, also not everyone has middle name? Maybe need to make a new PPRLHumanName to have a middle?
-* extension contains
-	insuranceNumber 1..1 		// PROBABLY WRONG, not within USCorePatient. Also this doesn't specify that it should be a string/valuetype (not sure how to do so for an extension).
+* name.given 1..* 				// name is already [1..*]
+* name.family 1..1
 * contact 1..* 					// Makes the contact field mandatory
 * contact.name 1..1 			// Makes the contact name mandatory
-* contact.name.given 1..1
+* contact.name.given 1..*
 * contact.name.family 1..1
 * address 1..* 					// Makes an address mandatory
 * address.line 1..1
 * address.postalCode 1..1
-* telecom 2..* 					// Where one entry must be the phone number, and one must be the email
-//* telecom[0].system = #phone <- these telecom elements are erroring when I try to run `sushi .` not totally sure how to do this
-//* telecom[1].system = #email
-* link 1..1						// Makes the link and link ID mandatory (Which is the whole point of PPRL)
+* telecom 1..* 					// Where one entry must be the phone number, and one must be the email
+* telecom ^slicing.discriminator.type = #pattern
+* telecom ^slicing.discriminator.path = "system"
+* telecom ^slicing.rules = #open
+* telecom contains phoneNumber 1..* and emailAddress 1..*
+* telecom[phoneNumber].system = #phone 
+* telecom[emailAddress].system = #email
+* link 0..1
 * link.id 1..1
 
 /*
@@ -37,20 +38,20 @@ Description: "A patient with the requirements for Privacy Preserving Record Link
 */
 
 /*
- 	---A CODI Patient that meets the PPRL Requirements must have the following attributes:
- 1) Birthdate	(within USCorePatient as birthDate [0..1])
- 2) Gender	(Within USCorePatient as "birthsex" with cardinality [0..1], also as "gender" with cardinality [1..1])
+ 	---A Patient that meets the PPRL Requirements must have the following attributes:
+ 1) Birthdate		(within USCorePatient as birthDate [0..1])
+ 2) Gender			(Within USCorePatient as "birthsex" with cardinality [0..1], also as "gender" with cardinality [1..1])
  3) IDENTIFIERID	(Within USCorePatient as "identifier.id" with cardinality [0..1])
- 4) PATID	(Within USCorePatient as "id" with cardinality [0..1])
- 5) GIVEN_NAME (Within USCorePatient as "name.given" with cardinality [0..*] gonna need to redefine HumanName with new cardinalities)
+ 4) PATID			(Within USCorePatient as "id" with cardinality [0..1])
+ 5) PARENT_GIVEN_NAME	(Within USCorePatient as "name.given" with cardinality [0..*])
  6) PARENT_FAMILY_NAME 	(Within USCorePatient as "name.family" with cardinality [0..1])
- 7) MIDDLE_INITIAL	(Not within USCorePatient, will add to PPRLHumanName with cardinality [0..1]?)
- 8) INSURANCE_NUMBER	(Not within USCorePatient)
+ 7) MIDDLE_INITIAL	(Not within USCorePatient, but is implied in givenName)
+ 8) INSURANCE_NUMBER	(REMOVED) (Not within USCorePatient, we have removed this requirement)
  9) PARENT_GIVEN_NAME	(Within USCorePatient as "contact.name.family" with cardinality [0..1])
  10) PARENT_FAMILY_NAME	(Within USCorePatient as "contact.name.given" with cardinality [0..1])
- 11) HOUSEHOLD_STREET_ADDRESS (Within USCorePatient as "address.line" with cardinality [0..1], will need to create a new PPRLAddress)
- 12) HOUSEHOLD_ZIP (Within USCorePatient as "address.postalcode" with cardinality [0..1], will need to create a new PPRLAddress)
- 13) HOUSEHOLD_PHONE (telecom[0])
- 15) HOUSEHOLD_EMAIL (telecom[1])
- 16) Link ID should also be mandatory since that's the whole point of PPRL
+ 11) HOUSEHOLD_STREET_ADDRESS	(Within USCorePatient as "address.line" with cardinality [0..1])
+ 12) HOUSEHOLD_ZIP	(Within USCorePatient as "address.postalcode" with cardinality [0..1])
+ 13) HOUSEHOLD_PHONE	(Within USCorePatient as "telecom.*")
+ 15) HOUSEHOLD_EMAIL	(Within USCorePatient as "telecom.*")
+ 16) LINK.ID 		(Not within USCorePatient and cannot be mandatory since the patient won't initially have one until after PPRL runs)
 */
