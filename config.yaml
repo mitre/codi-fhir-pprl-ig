@@ -1,0 +1,40 @@
+# ╭───────────────────────────ImplementationGuide-PPRL─────────────────────────────────────────────╮
+# │  The properties below are used to create the ImplementationGuide resource. For a list of       │
+# │  supported properties, see:                                                                    │
+# │  http://build.fhir.org/ig/HL7/fhir-shorthand/branches/beta/sushi.html#ig-development           │
+# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
+id: hl7.fhir.us.pprl
+canonical: http://hl7.org/fhir/us/pprl
+version: 1.0.0
+name: HL7FHIRImplementationGuidePPRLRelease1USRealmSTU1
+title: "HL7 FHIR Implementation Guide: PPRL Release 1 - US Realm | STU1"
+status: active
+publisher:
+  name: Robert Scalfani (TEMPORARY)
+  url: mitre.org
+  email: rscalfani@mitre.org
+jurisdiction: urn:iso:std:iso:3166#US "United States of America"
+description: PPRL (p. p. r. l.) For deidentifying and linking patient records.
+fhirVersion: 4.0.1
+dependencies:
+  hl7.fhir.us.core: 3.1.0
+parameters:
+  show-inherited-invariants: false
+copyrightYear: 2020+
+releaseLabel: STU1
+
+# ╭─────────────────────────────────────────────ig.ini─────────────────────────────────────────────╮
+# │  To control the ig.ini using this config, uncomment and set the "template" property.           │
+# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
+template: hl7.fhir.template#0.1.0
+
+# ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
+# │  To control the menu.xml using this config, uncomment and set the "menu" property.             │
+# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
+menu:
+  Home: index.html
+  Profiles: artifacts.html#2
+  Extensions: artifacts.html#3
+  Value Sets: artifacts.html#4
+  Downloads: downloads.html
+  Examples: examples.html
