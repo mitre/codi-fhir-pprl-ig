@@ -13,11 +13,15 @@
 <h3><a name="Background">Background</a></h3>
 <p>Patient Privacy Record Linkage (PPRL) is a process in which multiple patient records are linked without compromising or exposing their privacy or identities.</p>
 
-<p>PPRL depends on the interactions of the following 3 actos::</p>
+<p>This Implementation Guide serves the pupose of defining the requirements that patient must meet for PPRL. A Data Owner's patients must conform to the PPRLPatient Profile for the PPRL process to work correctly. The Implementation Guide is also planned to include the requirements for FHIR Bulk Data export, enforcing the requirement that a Data Owner be able to bulk export all patients.</p>
+
+<p>The PPRLPatient requirements are derived from USCore except that certain identifying information is now required instead of optional. Visit the PPRLPatient Structure Definition Differential Table to see which attributes are newly required.</p>
+
+<p>The PPRL Process depends on the interactions of the following 3 actors:</p>
 <ul>
     <li><b>Key Escrow; Contains the Patient Record Keys</b>: <a href="LINK</a></li>
     <li><b>Data Owner; Owns the Data to be PPRL'd</b>: <a href="LINK</a></li>
-    <li><b>DCC; Data Coordinating Center</b>: <a href="LINK</a></li>
+    <li><b>Data Coordinating Center (DCC); Performs Rcord Linkage:</b>: <a href="LINK</a></li>
 </ul>
 
 <p>PPRL was developed by the MITRE Corporation under the CODI Initiative sponsored by ___.</p>
@@ -26,12 +30,12 @@
 </ul>
 
 <h3><a name="Process">Process</a></h3>
-<p>The PPRL Process can be seen in the following Swim Lane Diagram:</p>
+<p>The PPRL Process follows the flow in this Swim Lane Diagram. It details the three actors and their chronological interactions throughout the PPRL Process.</p>
 
 <img src="pprl-process.png" alt="PPRL Process and Workflow" width="80%" align="left" style="margin: 0px 250px 0px 0px;" />
 
 <h4><a name="Salting">Salting</a></h4>
-<p>The Salting Process creates a "salt" which is a random hash that encypts data to safegaurd and privatize it. It is handled by the DCC.</p>
+<p>The Salting Process creates a "salt" which is a random hash that encypts data to safegaurd and privatize it. It is handled by the Key Escrow.</p>
 <ul>
     <li>DPH generates salt (tested and ready)</li>
     <li>DPH sends salt value via secure email (tested and ready)</li>
@@ -54,18 +58,19 @@
     <li>DCC will run the linkage sofware based on the garbled information given by the Data Owner.</li>
     <li>DCC will run a script to generate seperate LINKID files for Data Owners.</li>
     <li>Data Owners will translate the LINKIDs into PATIDs and insert this inforamtion into the LINK table.</li>
-
 </ul>
 
 <h3><a name="BulkData">FHIR Bulk Data</a></h3>
 <p>FHIR Bulk Patient Data Requirements.</p>
+<ul>
+    <li>PPRL requires that the Data Owner have an implementation of <a href="https://hl7.org/fhir/uv/bulkdata/" target="_blank">FHIR Bulk Data Export</a> so that mass patients may be exported and PPRL'd.</li>
+</ul>
 
-<p>This implementation guide is a Domain of Knowledge IG. The purpose of this IG is to show how to represent clinical concepts generally, not to have a complete set of agreements for interoperable exchanges.</p>
-
-<h3><a name="Disclaimers">Disclaimers and Known Limitations</a></h3>
+<h3><a name="Disclaimers">Disclaimers and Known Limitations (NOT SURE IF SECTION IS NEEDED)</a></h3>
 <p></p>
 <ul>
     <li>PPRL Limitations?</li>
+    <li>PPRL Enforces certain patient identifier requirements that may not be met by every Data Owner?</li>
 </ul>
 
 <h3><a name="Credits">Credits</a></h3>
@@ -81,6 +86,7 @@
     </td>
     <td width="80%">
     <p><a href="mailto:rscalfani@mitre.org">rscalfani@mitre.org</a></p>
+    <p><a href="mailto:andrewg@mitre.org">andrewg@mitre.org</a></p>
     </td>
     </tr>
     <tr>
