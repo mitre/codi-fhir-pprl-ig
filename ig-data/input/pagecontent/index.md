@@ -15,13 +15,13 @@
 
 <p>This Implementation Guide serves the pupose of defining the requirements that patient must meet for PPRL. A Data Owner's patients must conform to the PPRLPatient Profile for the PPRL process to work correctly. The Implementation Guide is also planned to include the requirements for FHIR Bulk Data export, enforcing the requirement that a Data Owner be able to bulk export all patients.</p>
 
-<p>The PPRLPatient requirements are derived from USCore except that certain identifying information is now required instead of optional. Visit the PPRLPatient Structure Definition Differential Table to see which attributes are newly required.</p>
+<p>The PPRLPatient requirements are derived from USCore except that certain identifying information is now required instead of optional. Visit the <a href="StructureDefinition-pprl-patient.html">PPRLPatient Structure Definition</a> Differential Table to see which attributes are newly required. You may also visit the <a href="implementation.html">Implementation and Conformance Requirements</a>.</p>
 
 <p>The PPRL Process depends on the interactions of the following 3 actors:</p>
 <ul>
-    <li><b>Key Escrow; Contains the Patient Record Keys</b>: <a href="LINK</a></li>
-    <li><b>Data Owner; Owns the Data to be PPRL'd</b>: <a href="LINK</a></li>
-    <li><b>Data Coordinating Center (DCC); Performs Rcord Linkage:</b>: <a href="LINK</a></li>
+    <li><b>Key Escrow; Contains the Patient Record Keys</b></li>
+    <li><b>Data Owner; Owns the Data to be PPRL'd</b></li>
+    <li><b>Data Coordinating Center (DCC); Performs Rcord Linkage</b></li>
 </ul>
 
 <p>PPRL was developed by the MITRE Corporation under the CODI Initiative sponsored by ___.</p>
@@ -75,7 +75,7 @@
 
 <h3><a name="Credits">Credits</a></h3>
 <p>Authored by the CODI project at MITRE, sponsored by ___</p>
-<p>This IG was authored by the MITRE Corporation using <a href="http://build.fhir.org/ig/HL7/fhir-shorthand/" target="_blank">FHIR Shorthand (FSH)</a> and <a href="https://github.com/FHIR/sushi" target="_blank">SUSHI</a>, a free, open source toolchain from <a href="https://www.mitre.org/" target="_blank">MITRE Corporation</a>.</p>
+<p>This IG was authored by the MITRE Corporation using <a href="http://build.fhir.org/ig/HL7/fhir-shorthand/" target="_blank">FHIR Shorthand (FSH)</a> and <a href="https://github.com/FHIR/sushi" target="_blank">SUSHI</a>, a free, open source toolchain from the <a href="https://www.mitre.org/" target="_blank">MITRE Corporation</a>.</p>
 
 <h3><a name="Contacts">Contact Information</a></h3>
 <table width="100%">
