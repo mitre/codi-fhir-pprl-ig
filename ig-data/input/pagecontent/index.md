@@ -36,7 +36,7 @@
 
 <p>The PPRL Process involves the following sequence of steps:</p>
 <ol>
-    <il>A key escrow shares configuration information with each data partner. This includes information required to use the linkage method and the encryption key that is used by all the data partners.</il>
+    <il>A key escrow shares configuration information with each data partner. This includes information required for record linkage and the encryption used by all data partners.</il>
     <il>Each data partner creates a hashed dataset by:
     <ul>
         <li>Extracting PII from its operational database. These data elements must meet agreed-upon specifications, the choice of PII attributes may depend on characteristics of the data population and will affect the level of linkage accuracy attainable.</li>
@@ -85,6 +85,7 @@
 <p>FHIR Bulk Patient Data Requirements.</p>
 <ul>
     <li>PPRL requires that the Data Owner have an implementation of <a href="https://hl7.org/fhir/uv/bulkdata/" target="_blank">FHIR Bulk Data Export</a> so that mass patients may be exported and PPRL'd.</li>
+    <li>The FHIR Bulk Data  implementation should export in NDJSON format in which each patient makes up a single line in the file. The patients in each line should be in valid JSON format but are seperated from eachother by newlines.</li>
 </ul>
 
 <h3><a name="Disclaimers">Disclaimers and Known Limitations</a></h3>
