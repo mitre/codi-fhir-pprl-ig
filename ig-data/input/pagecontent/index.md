@@ -11,20 +11,20 @@
 </ul>
 
 <h3><a name="Background">Background</a></h3>
-<p>Patient Privacy Record Linkage (PPRL) is a process in which multiple patient records are linked without compromising or exposing their privacy or identities.</p>
+<p>Patient Privacy Record Linkage (PPRL) is a process in which multiple records for a single patient are linked without compromising or exposing their privacy or identities.</p>
 
-<p>To perform population health analyses, the Centers for Disease Control (CDC) uses data from many health organizations around the country. However, in the interest of preserving patient privacy, health organizations and hospitals will provide de-identified data, so that no one person can be linked to any health data. This presents the problem of linking multiple data records for the same patient: if a patient recieves care at multiple hospitals, each of their records at each hospital will be treated independently, creating multiple incomplete health records. PPRL aims to solve this issue without compromising Personally Identifiable Information (PII) or privacy by conducting record linkages between patient records without any PII data leaving the boundaries of a hospital. This allows the CDC to more accurately assess population health by providing complete health histories for individual patients without compromising their privacies or identities.</p>
+<p>To perform population health analyses, the Centers for Disease Control (CDC) uses data from many health organizations around the country. However, in the interest of preserving patient privacy, health organizations and hospitals will provide de-identified data, so that no one person can be linked to any health data. This presents the problem of having multiple data records for the same patient: if a patient recieves care at multiple hospitals, each of their records at each hospital will be treated independently, creating multiple incomplete health records. PPRL aims to solve this issue without compromising Personally Identifiable Information (PII) or privacy by conducting record linkages between patient records without any PII data leaving the boundaries of a hospital. This allows the CDC to more accurately assess population health by providing complete health histories for individual patients without compromising their privacies or identities.</p>
 
-<p>During the PPRL process, PII is obfuscated, or hashed in a series of prescribed steps prior to transmission beyond an organizational boundary for matching. The process of hashing results in data that is nearly impossible for an outside party to recover PII from, but still allows for the establishment of record linkages across organizations. PPRL also allows for “blind” matching in which a third party, known as a linkage agent, is provided access to the hashed data, but is unable to view PII. The linkage agent then compares the obfuscated information to establish linkages between a patient's multiple records with a unique Link Identifier. The following figure illustrates this process.</p>
+<p>During the PPRL process, PII is obfuscated, or hashed in a series of prescribed steps prior to transmission beyond an organizational boundary for matching. The process of hashing results in data that is nearly impossible for an outside party to recover PII from, but still allows for the establishment of record linkages across organizations. PPRL also allows for “blind” matching in which a third party, the Linkage Agent, is provided access to the hashed data, but is unable to view PII. The linkage agent then compares the obfuscated information to establish linkages between a patient's multiple records with a unique Link Identifier. The following figure illustrates this process.</p>
 
 <img src="pprl-blind-matching.png" alt="PPRL Blind Matching" width="100%" align="left" style="margin: 0px 250px 0px 0px;" />
 
-<p>This Implementation Guide serves the pupose of defining the requirements that patient data stored by Data Owners must meet for PPRL. A Data Owner's patients must conform to the PPRLPatient Profile for the PPRL process to work correctly so that record linkages can be conducted consistently and corectly. The Implementation Guide is also planned to include the requirements for FHIR Bulk Data export, enforcing the requirement that a Data Owner be able to bulk export all patients in the NDJSON format.</p>
+<p>This Implementation Guide serves the pupose of defining the requirements that patient data stored by Data Owners must meet for PPRL. A Data Owner's patients must conform to the PPRLPatient Profile for the PPRL process to work correctly so that record linkages can be conducted consistently and correctly. This is because PPRL depends on the demographic attributes of a patient, which must be consistent accross organizations for the same patient. The Implementation Guide is also planned to include the requirements for FHIR Bulk Data export, enforcing the requirement that a Data Owner be able to bulk export all patients in the NDJSON format.</p>
 
-<p>The PPRLPatient requirements are derived from USCore except that certain identifying information is now required instead of optional. Visit the <a href="StructureDefinition-pprl-patient.html">PPRLPatient Structure Definition</a> Differential Table to see which attributes are newly required. You may also visit the <a href="implementation.html">Implementation and Conformance Requirements</a>.</p>
+<p>The PPRLPatient requirements are derived from USCore except that certain identifying information and attributes are now required instead of optional. Visit the <a href="StructureDefinition-pprl-patient.html">PPRLPatient Structure Definition</a> Differential Table to see which attributes are required. You may also visit the <a href="implementation.html">Implementation and Conformance Requirements</a>.</p>
 
 <h3><a name="Process">Process</a></h3>
-<h4><a name="Roles">The PPRL Process depends on the interactions of the following 3 actors:</a></h4>
+<p><b>The PPRL Process depends on the interactions of the following 3 actors:</b></p>
 <ul>
     <li><b>Key Escrow</b>: Contains the Patient Record Keys
     <ul><li>Shares the configuration files used in encryption and the encryption key with Data Owners.</li></ul></li>
@@ -33,52 +33,43 @@
     <li><b>Linkage Agent</b>: Performs Record Linkage
     <ul><li>Uses the encrypted hashed data from the Data Owners to perform record linkage, providing Data Owners with the unique identifiers from the PPRL process. This role can be performed by any trusted organization, whether that be the CDC or some third party.</li></ul></li>
 </ul>
-
-<p>The PPRL Process involves the following sequence of steps:</p>
+<p></p>
+<p><b>The PPRL Process follows this sequence of steps:</b></p>
 <ol>
-    <il>A key escrow shares configuration information with each data partner. This includes information required for record linkage and the encryption used by all data partners.</il>
-    <il>Each data partner creates a hashed dataset by:
+    <il>1.  The Key Escrow shares configuration information with each Data Partner such as the information required for record linkage and the encryption method to be used.</il>
+    <il>Each Data Partner creates their hashed patient dataset by:
     <ul>
-        <li>Extracting PII from its operational database. These data elements must meet agreed-upon specifications, the choice of PII attributes may depend on characteristics of the data population and will affect the level of linkage accuracy attainable.</li>
-        <li>Using the encryption keys provided by the key escrow to pass the PII through a hashing process that will obfuscate the information.</li>
-        <li>Sharing the hashed data with the linkage agent.</li>
+        <li>Extracting PII from its operational database. These data elements must meet agreed-upon specifications; the choice of PII attributes may depend on characteristics of the data population and will effect the accuracy of record linkage.</li>
+        <li>Using the encryption keys provided by the Key Escrow to pass the PII through a consistent hashing process that will obfuscate the information.</li>
+        <li>Sharing the hashed data with the Linkage Agent.</li>
     </ul></il>
-    <il>The linkage agent develops a unique identifier known as a LINKID by:
+    <il>2.  The Linkage Agent develops a unique identifier for each patient record known as a LINKID by:
     <ul>
         <li>Determining which hashed values correspond to the same individual.</li>
         <li>Establishing a unique LINKID for each individual.</li>
     </ul></il>
-    <il>The linkage agent shares the LINKIDs with each data partner. The LINKIDs can be stored by the data partners for future queries, provided the data holdings of the data partners remain constant. The Linkage Agent can then match records for the same patients accross health systems.</il>
+    <il>3.  The linkage agent shares the LINKIDs with each Data Partner. The LINKIDs can be stored by the data partners for future queries, provided the data holdings of the data partners remain constant. The Linkage Agent can then match records for the same patients accross multiple additional health systems.</il>
 </ol>
 
 <p>The PPRL Process follows the flow in this Swim Lane Diagram. It details the three actors and their chronological interactions throughout the PPRL Process.</p>
 
 <img src="pprl-process.png" alt="PPRL Process and Workflow" width="80%" align="left" style="margin: 0px 250px 0px 0px;" />
 
+<p></p>
 <h4><a name="Salting">Salting</a></h4>
-<p>The Salting Process creates a "salt" which is a random hash that encypts data to safegaurd and privatize it. It is handled by the Key Escrow.</p>
+<p>The Salting Process extracts and garbles the patient data and generates the random hash that encypts and obfuscates it to safegaurd and privatize it. The method and its encryption key is given by the Key Escrow to each of the Data Owners to ensure consistent hashing. It follows the sequence of steps:</p>
 <ul>
-    <li>Data Owner generates salt (tested and ready)</li>
-    <li>Data Owner sends salt value via secure email (tested and ready)</li>
-    <li>Data Owner destroys salt (not on critical path for testing)</li>
-    <p>The Data Owner must Destroy Salt value when hashing is complete, which serves the pupose of ___.</p>
-</ul>
-
-<h4><a name="ExtractAndGarble">Extract and Garble</a></h4>
-<p>Extracting and Garbling is handled by the Data Owner.</p>
-<ul>
-    <li>Data Owner must have an identifier table that data can be pulled from.</li>
-    <li>Data Owner must garble the data.</li>
-    <li>Data Owner will send the garbled infomation to the Linkage Agent using Secure File Transfer Protocol (SFTP).</li>
-    <li>Linkage Agent will distribute credentials to Data Owners..</li>
+    <li>Data Owner must have a patient PII data table that data can be extraced from.</li>
+    <li>Data Owner generates salt (hash) for its patient PII data using the given method and encryption key.</li>
+    <li>Data Owner sends salt (hash) value via a Secure File Transfer Protocol (SFTP) to the Linkage Agent for linking.</li>
+    <li>Data Owner destroys salt (hash) encyption key and notifies others that it has been destroyed to maintain the security of the hash.</li>
 </ul>
 
 <h4><a name="PerformLinkage">Perform Linkage</a></h4>
-<p>The patient record linkage is handled by the Linkage Agent.</p>
+<p>Patient record linkage is handled by the Linkage Agent.</p>
 <ul>
-    <li>The Linkage Agent will run the linkage sofware based on the garbled information given by the Data Owner.</li>
-    <li>The Linkage Agent will run a script to generate seperate LINKID files for Data Owners.</li>
-    <li>Data Owners will translate the LINKIDs into PATIDs and insert this inforamtion into the LINK table.</li>
+    <li>The Linkage Agent runs the linkage sofware on the garbled patient data given by the Data Owners.</li>
+    <li>The Linkage Agent runs a script to generate seperate LINKID files for the patient data to be distributed to the Data Owners.</li>
 </ul>
 
 <h3><a name="BulkData">FHIR Bulk Data</a></h3>
