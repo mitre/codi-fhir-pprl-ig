@@ -23,18 +23,11 @@ parameters:
 copyrightYear: 2020+
 releaseLabel: STU1
 
-# ╭─────────────────────────────────────────────ig.ini─────────────────────────────────────────────╮
-# │  To control the ig.ini using this config, uncomment and set the "template" property.           │
-# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
-template: hl7.fhir.template#0.1.0
-
 # ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
 # │  To control the menu.xml using this config, uncomment and set the "menu" property.             │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
   Profiles: artifacts.html#2
-  Extensions: artifacts.html#3
-  Value Sets: artifacts.html#4
   Downloads: downloads.html
   Examples: examples.html
