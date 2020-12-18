@@ -22,6 +22,19 @@ parameters:
   show-inherited-invariants: false
 copyrightYear: 2020+
 releaseLabel: STU1
+pages:
+  index.md:
+    title: Home
+  implementation.md:
+    title: Implementation
+  examples.md:
+    title: Examples
+  change_log.md:
+    title: Change Log
+  downloads.md:
+    title: Downloads
+  versions.md:
+    title: Versions
 
 # ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
 # │  To control the menu.xml using this config, uncomment and set the "menu" property.             │
