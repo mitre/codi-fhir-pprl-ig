@@ -2,3 +2,8 @@
 .DS_Store?
 /build
 /fsh-generated
+/output
+/temp
+/template
+/input-cache
+.vscode
