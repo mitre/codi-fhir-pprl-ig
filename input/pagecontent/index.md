@@ -9,58 +9,70 @@
 ### <a name="Background">Background</a>
 Privacy Preserving Record Linkage (PPRL) is a process in which multiple records for a single patient are linked without compromising or exposing their privacy or identities.
 
-To perform population health analyses, researchers may want access to data across multiple organizations. However, this presents the problem of having multiple data records for the same patient: if a patient recieves care at multiple healthcare providers, each of their records at each provider will be treated independently, creating multiple incomplete health records. PPRL aims to solve this issue without compromising Personally Identifiable Information (PII) or privacy by conducting record linkages between patient records without any PII data leaving the boundaries of a provider. This allows researchers to more accurately assess population health by providing complete health histories for individual patients without compromising their privacies or identities.
+To perform population health analyses, researchers may want access to data across multiple organizations. However, this presents the problem of having multiple data records for the same patient. If a patient recieves care at multiple healthcare providers, each of their records at each provider will be treated independently, creating multiple incomplete health records. PPRL aims to solve this issue without compromising Personally Identifiable Information (PII) or privacy by conducting record linkages between patient records without any PII data leaving the boundaries of a provider. This allows researchers to more accurately assess population health by providing complete health histories for individual patients without compromising their privacies or identities.
 
-During the PPRL process, PII is obfuscated in a series of prescribed steps prior to transmission beyond an organizational boundary for matching. The process of obfuscation results in data that is nearly impossible for an outside party to recover PII from, but still allows for the establishment of record linkages across organizations. PPRL allows for “blind” matching in which a third party, the Linkage Agent, is provided access to the obfuscated data, but is unable to view PII. The Linkage Agent then compares the obfuscated information to establish linkages between a patient's multiple records with a unique Link Identifier. The following figure illustrates this process.
+During the PPRL process, PII is obfuscated in a series of prescribed steps prior to transmission beyond an organizational boundary for matching. Organizations with records to be linked as a apart of the PPRL process are referred to as Data Owners. The process of obfuscation results in data that is nearly impossible for an outside party to recover PII from, but still allows for the establishment of record linkages across organizations. PPRL allows for “blind” matching in which a third party, the Linkage Agent, is provided access to the obfuscated data, but is unable to view PII. The Linkage Agent then compares the obfuscated information to establish linkages between a patient's multiple records with a unique Link Identifier. The following figure illustrates this process.
 
 <img src="pprl-blind-matching.png" alt="PPRL Blind Matching" width="100%" align="left" style="margin: 0px 250px 0px 0px;" />
 
-This Implementation Guide serves the pupose of defining the requirements that patient data stored by Data Owners must meet for PPRL. A Data Owner's patients must conform to the PPRLPatient Profile for the PPRL process to work correctly so that record linkages can be conducted consistently and correctly. This is because PPRL depends on the demographic attributes of a patient, which must be consistent accross organizations for the same patient. The Implementation Guide is also planned to include the requirements for FHIR Bulk Data export, enforcing the requirement that a Data Owner be able to bulk export all patients in the NDJSON format.
+This Implementation Guide specifies how a PPRL process can be conducted when Data Owners retain patient information in FHIR enabled systems. It specifies the processes for
+
+This Implementation Guide serves the pupose of defining the requirements that patient data stored by Data Owners must meet for PPRL.
 
 The PPRLPatient requirements are derived from USCore except that certain identifying information and attributes are now required instead of optional. Visit the [PPRLPatient Structure Definition](StructureDefinition-pprl-patient.html) Differential Table to see which attributes are required. You may also visit the [Implementation and Conformance Requirements](implementation.html).
 
 ### <a name="Roles">Roles</a>
 **The PPRL Process depends on the interactions of the following 3 actors:**
 
-* **Key Escrow**: Responsible for maintaining and distributing secret values needed to support the PPRL Process.
+* **Key Escrow**: Responsible for maintaining and distributing peppers needed to support the PPRL Process.
   * The Key Escrow may also manage configuration information for the PPRL process. The specific details about PPRL tool configuration and distribution are vendor specific and out of scope for this IG.
 * **Data Owner**: Onganizations who have custody of PII that will be used for the PPRL process.
   * Will conduct the obfuscation of the data and share it for record linkage. Will incorporate the record linkage unique identifiers into their system.
 * **Linkage Agent**: Performs Record Linkage
   * Uses the obfuscated data from the Data Owners to perform record linkage, providing Data Owners with the unique identifiers from the PPRL process.
 
-#### The PPRL Process follows this sequence of steps:
+### <a name="Systems">Systems</a>
+**The following systems are involved in the execution of the PPRL Process:**
 
-1.  Each Data Partner creates their obfuscated patient dataset by:
-    * Extracting PII from its operational database. These data elements must meet agreed-upon specifications; the choice of PII attributes may depend on characteristics of the data population and will effect the accuracy of record linkage.
-    * Using the encryption keys provided by the Key Escrow to pass the PII through a consistent process that will obfuscate the information.
-    * Sharing the obfuscated data with the Linkage Agent.
-1. The Linkage Agent develops a unique identifier for each patient record known as a LINKID by:
-    * Determining which obfuscated values correspond to the same individual.
-    * Establishing a unique LINKID for each individual.
-1.  The linkage agent shares the LINKIDs with each Data Partner. The LINKIDs can be stored by the data partners for future queries, provided the data holdings of the data partners remain constant. The Linkage Agent can then match records for the same patients accross multiple additional health systems.
+* **Secret Generator**: A system residing at the Key Escrow responsible for generating a pepper for the PPRL Process.
+* **Patient Information System**: The system at a Data Owner that contains PII and related information on individuals to be linked. This may be an Electronic Health Record (EHR) system.
+* **PPRL Client**: Software that operates at the Data Owner to facilitate obfuscation of PII. This software may also be responsible for processing responses from the Record Linking System.
+* **Record Linking System**: The system that performs record linkage on obfuscated information.
 
-The PPRL Process follows the flow in this Swim Lane Diagram. It details the three actors and their chronological interactions throughout the PPRL Process.
+### The PPRL Process
 
-<img src="pprl-process.png" alt="PPRL Process and Workflow" width="80%" align="left" style="margin: 0px 250px 0px 0px;" />
+The PPRL Process requires the following steps:
 
-#### Extract
-Data owners provide their data via Bulk FHIR
+1. The Key Escrow, using the Secret Generator, generates a pepper, often referred to as a [salt](https://auth0.com/blog/adding-salt-to-hashing-a-better-way-to-store-passwords/), but technically a [pepper](https://simplicable.com/new/salt-vs-pepper), for use for a particular record linkage cycle. Throughout the rest of this implementation guide, the term pepper will be used.
+1. The pepper is securely transmitted from the Key Escrow to all Data Owners participating in the PPRL process.
+1. Each Data Owner will use the PPRL Client to extract information from their Patient Information System. Using the extracted information and pepper, the PPRL Client will obfuscate the information.
+1. Each Data Owner will transmit the obfuscated information to the Linkage Agent.
+1. The Linkage Agent will use the Record Linking System to identify matches from the obfuscated data. The Record Linking System will assign identifiers to individuals based on the matching process.
+1. The Linkage Agent will communicate the identifiers to the Data Owners
+1. The Data Owners will associate the identifiers with the individuals in the Patient Information System. The PPRL Client may be used to facilitate this process.
+
+#### Pepper Generation
+The key escrow is the organization responsible for creating the pepper or encryption key that data owners and data providers will use in the de-identification process. Given that the de-identification process relies on the pepper remaining secure, it is critical that it be created and distributed appropriately.
+
+The exact mechanism for generation of the pepper value is not specified by this implementation guide. The most important aspect of the pepper is that it is sufficiently random to prevent re-identification through brute force compytation. As such, the key escrow must use a Cryptographically Secure Pseudo-Random Number Generator (CSPRNG) as the source for the salt value. The Open Web Application Security Project provides a [Cryptographic Storage Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cryptographic_Storage_Cheat_Sheet.md#secure-random-number-generation) with references to appropriate CSPRNGs.
+
+#### Pepper Transmission from Key Escrow to Data Owners
+This implementation guide does not specify the storage format or transport mechanism for a pepper value. The Key Escrow should determine a mechanism that can be used for securely transmitting the pepper to Data Owners.
+
+#### PPRL Client Extract of Information From the Patient Information System
+Patient Information Systems must support the [FHIR Bulk Data Access IG](https://hl7.org/fhir/uv/bulkdata/). The PPRL Client SHALL invoke the [patient export FHIR Operation](https://hl7.org/fhir/uv/bulkdata/OperationDefinition-patient-export.html#operationdefinition-patient-export) on the [All Patients Endpoint](https://hl7.org/fhir/uv/bulkdata/export/index.html#endpoint---all-patients) of the Patient Information System. The PPRL Client SHALL then use the [Bulk Data Status Request](https://hl7.org/fhir/uv/bulkdata/export/index.html#bulk-data-status-request) and [File Request](https://hl7.org/fhir/uv/bulkdata/export/index.html#file-request) to obtain access to the [Patient](http://www.hl7.org/implement/standards/fhir/patient.html) resources to acess PII necessary for the PPRL process.
 
 #### Obfuscation
-Obfuscation processes the PII such that it is de-identified, but can still be used for linkage purposes. This may involve the use of hashing algorithms or the construction of Bloom filters. The exact details of the obfuscation set are dependent on the PPLR tool being used and are out of scope for this IG. The method and its encryption key is given by the Key Escrow to each of the Data Owners to ensure consistent processing. It follows the sequence of steps:
+The PPRL Client shall process the PII such that it is de-identified, but can still be used for linkage purposes. This may involve the use of hashing algorithms or the construction of Bloom filters. The exact details of the obfuscation or the data elements used are not specified by this IG. Implementers should be familiar with [HIPAA de-identification methods](https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html). The PPRL Client SHALL use the pepper value obtained by from the Key Escrow to facilitate the obfuscation process.
 
-* Data Owner must have a patient PII data table that data can be extraced from.
-* Data Owner obfuscates its patient PII data using the given method and pepper.
-* Data Owner sends obfuscated data to the Linkage Agent.
-* Data Owner destroys pepper and notifies others that it has been destroyed to maintain the security of the process.
+The storage format for the obfuscated data is not specified by this implementation guide. It is assumed that communication between the PPRL Client and Record Linking System may take place through an implementation specific format. It is not expected to have PPRL Clients and Record Linkage Systems from different vendors or open source solutions.
+
+#### Transmission of Obfuscated Information from Data Owner to Linkage Agent
+The obfuscated information created by the PPRL Client shall be transmitted to the Linkage Agent for record linking. The method of transport is not specified by this implementation guide. The transport process may be facilitated by the PPRL Client or it may require additional automated or manual interventions to move the information.
 
 #### Perform Linkage
 
-Patient record linkage is handled by the Linkage Agent.
-
-* The Linkage Agent runs the linkage sofware on the garbled patient data given by the Data Owners.
-* The Linkage Agent runs a script to generate seperate LINKID files for the patient data to be distributed to the Data Owners.
+Once all obfuscated information has been received from Data Owners at the Linkage Agent, the Record Linkage System shall process the information to determine matching records. The exact procedures for determining a match are not specified in this implementation guide. The elements used to match, thresholds for matching and other configuration considerations will vary depending on deployment setting.
 
 ### <a name="BulkData">FHIR Bulk Data</a>
 
