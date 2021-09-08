@@ -1,7 +1,7 @@
 * <a href="#Background">Background</a>
 * <a href="#Roles">Roles</a>
 * <a href="#BulkData">FHIR Bulk Data</a>
-* <a href="#Disclaimers">Disclaimers and Known Limitations</a>
+* <a href="#Disclaimers">Known Limitations</a>
 * <a href="#Contacts">Contact Information</a>
 * <a href="#Credits">Credits</a>
 
@@ -39,6 +39,12 @@ The PPRLPatient requirements are derived from USCore except that certain identif
 * **PPRL Client**: Software that operates at the Data Owner to facilitate obfuscation of PII. This software may also be responsible for processing responses from the Record Linking System.
 * **Record Linking System**: The system that performs record linkage on obfuscated information.
 
+### Overall PPRL Solution
+
+The following image shows how the roles and systems interact to create an overall PPRL Solution.
+
+<img src="fhir-pprl-system.png" alt="Systems involved in PPRL" width="100%" align="left" style="margin: 0px 250px 0px 0px;" />
+
 ### The PPRL Process
 
 The PPRL Process requires the following steps:
@@ -50,6 +56,10 @@ The PPRL Process requires the following steps:
 1. The Linkage Agent will use the Record Linking System to identify matches from the obfuscated data. The Record Linking System will assign identifiers to individuals based on the matching process.
 1. The Linkage Agent will communicate the identifiers to the Data Owners
 1. The Data Owners will associate the identifiers with the individuals in the Patient Information System. The PPRL Client may be used to facilitate this process.
+
+The steps of this process are shown below:
+
+<img src="fhir-pprl-process.png" alt="PPRL sequence diagram" width="100%" align="left" style="margin: 0px 250px 0px 0px;" />
 
 #### Pepper Generation
 The key escrow is the organization responsible for creating the pepper or encryption key that data owners and data providers will use in the de-identification process. Given that the de-identification process relies on the pepper remaining secure, it is critical that it be created and distributed appropriately.
@@ -74,6 +84,10 @@ The obfuscated information created by the PPRL Client shall be transmitted to th
 
 Once all obfuscated information has been received from Data Owners at the Linkage Agent, the Record Linkage System shall process the information to determine matching records. The exact procedures for determining a match are not specified in this implementation guide. The elements used to match, thresholds for matching and other configuration considerations will vary depending on deployment setting.
 
+#### Communicate Linkage Information with Data Owners
+
+The Linkage System will generate matching information to be shared with Data Owners. Match information shall be represented as a [FHIR Bundle](https://www.hl7.org/fhir/bundle.html) that conforms to the Matching Bundle Profile.
+
 ### <a name="BulkData">FHIR Bulk Data</a>
 
 FHIR Bulk Patient Data Requirements.
@@ -81,8 +95,14 @@ FHIR Bulk Patient Data Requirements.
 * PPRL requires that the Data Owner have an implementation of [FHIR Bulk Data Export](https://hl7.org/fhir/uv/bulkdata/) so that mass patients may be exported and PPRL'd.
 * The FHIR Bulk Data implementation should export in NDJSON format in which each patient makes up a single line in the file. The patients in each line should be in valid JSON format but are seperated from eachother by newlines.
 
-### <a name="Disclaimers">Disclaimers and Known Limitations</a>
-PPRL is intended to preserve the privacy of PII while enabling matching. However, like other record matching techniques, the PPRL process has several weaknesses that can impact the security and privacy of PII: (1) the PPRL process is vulnerable to adversary attacks resulting in breaches in privacy, (2) poor data quality and errors in matching can degrade linkage quality, and (3) there are computational limitations to scale the PPRL process.</p>
+### <a name="Disclaimers">Known Limitations</a>
+PPRL is intended to preserve the privacy of PII while enabling matching. However, like other record matching techniques, the PPRL process has weaknesses that can impact the process.
+
+An ideal PPRL process is constructed to protect the privacy of individuals. This privacy may be compromised through the disclosure of the secret value, or an obfuscation process that does not sufficiently deidentify the source data. Construction of appropriate obfuscation techniques is outside the scope of this IG.
+
+As with any record matching process, poor source data quality will likely degrade linkage quality. Some techniques used to work with identity data, such as files of nicknames or looking for month/day swaps are unavailable using a PPRL process.
+
+PPRL will often require greater computational resources than a plain text record linkage process.
 
 ### <a name="Credits">Credits</a>
 Authored by the CODI project at MITRE, sponsored by the CDC.
@@ -105,5 +125,4 @@ This IG was authored by the MITRE Corporation using [FHIR Shorthand (FSH)](http:
 
 The PPRL FHIR Implementation Guide was developed by the [MITRE Corporation](http://www.mitre.org) under the Community and Clinical Data Initative (CODI) sponsored by CDC.
 
-MITRE: NOT Approved for Public Release. Distribution Unlimited. Case Number XXX
 
