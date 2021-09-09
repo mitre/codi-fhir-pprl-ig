@@ -10,37 +10,25 @@ name: HL7FHIRImplementationGuidePPRLRelease1USRealmSTU1
 title: "HL7 FHIR Implementation Guide: PPRL Release 1 - US Realm | STU1"
 status: active
 publisher:
-  name: Robert Scalfani (TEMPORARY)
-  url: mitre.org
-  email: rscalfani@mitre.org
+  name: The MITRE Corporation
+  url: http://mitre.org
+  email: andrewg@mitre.org
 jurisdiction: urn:iso:std:iso:3166#US "United States of America"
-description: PPRL (p. p. r. l.) For deidentifying and linking patient records.
+description: Privacy Preserving Record Linkage
 fhirVersion: 4.0.1
 dependencies:
   hl7.fhir.us.core: 3.1.0
 parameters:
   show-inherited-invariants: false
-copyrightYear: 2020+
+copyrightYear: 2021+
 releaseLabel: STU1
-pages:
-  index.md:
-    title: Home
-  implementation.md:
-    title: Implementation
-  examples.md:
-    title: Examples
-  change_log.md:
-    title: Change Log
-  downloads.md:
-    title: Downloads
-  versions.md:
-    title: Versions
 
 # ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
 # │  To control the menu.xml using this config, uncomment and set the "menu" property.             │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Profiles: artifacts.html#2
+  Implementation: implementation.html
+  Profiles: artifacts.html
   Downloads: downloads.html
   Examples: examples.html
