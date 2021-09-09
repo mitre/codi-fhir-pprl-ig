@@ -6,5 +6,5 @@ Description: "Results of a PPRL matching process"
 
 * type = http://hl7.org/fhir/bundle-type#transaction
 * entry.request.method = http://hl7.org/fhir/http-verb#PUT
-* entry.resource only USCorePatient
+* entry.resource only PPRLPatient
 

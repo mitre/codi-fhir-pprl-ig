@@ -79,7 +79,7 @@ Once all obfuscated information has been received from Data Owners at the Linkag
 
 #### Communicate Linkage Information with Data Owners
 
-The Linkage System will generate matching information to be shared with Data Owners. Match information shall be represented as a [FHIR Bundle](https://www.hl7.org/fhir/bundle.html) that conforms to the Matching Bundle Profile.
+The Record Linkage System will generate matching information to be shared with Data Owners. Match information shall be represented as a [FHIR Bundle](https://www.hl7.org/fhir/bundle.html) that conforms to the [Matching Bundle Profile](StructureDefinition-matching-bundle.html). The Matching Bundle shall contain Patient resources, the same set of resources that were provided to the matching process. The Record Linkage System or PPRL Client is responsible for modifying those resources such that their identifier data element contains a new linking identifier. An example of this can be seen by comparing the [PPRL Patient Example](Patient-PPRLPatientExample.html) with the [Matching PPRL Patient Example](Patient-12345.html). Note the new identifier in the `https://example-linkage-agent.org/linkage-id` system.
 
 ### FHIR Bulk Data
 
