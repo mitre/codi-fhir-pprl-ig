@@ -1,11 +1,11 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hl7.org/fhir ../../input-cache/schemas-r5/fhir-single.xsd">
+### Resource Examples
 
-<h3><a name="Examples"></a>PPRL FHIR Examples</h3>
+This section provides some examples how different resources may be represented in a FHIR instance which conforms to this implementation guide.
 
-<p>This section provides some examples how PPRL Patients may be represented in a FHIR instance which conforms to this implementation guide.</p>
-<ul>
-    <li><b>PPRLPatient</b>: <a href="xxx.html">PPRLPatientExample</a>  includes only the required attributes of a PPRLPatient.</li>
-    <li><b>FHIR Bulk Patient Data Export:</b> <a href="xxx.html">FHIRBulkDataExport</a> provides example implementations for FHIR Bulk Data Export.</li>
-</ul>
+#### Patient Related Examples
 
-</div>
+* [PPRL Patient Example](Patient-PPRLPatientExample.html) includes only the required attributes of a PPRLPatient profile.
+* [Matching PPRL Patient Example](Patient-12345.html) shows what a Record Linkage System or PPRL Client should return, in a Bundle, to a Data Owner to incorporate in their Patient Information System. Also, see the Matching Bundle for the structure that will incorporate a collection of these.
+
+#### Matching Bundle Example
+* [Matching Bundle Example](Bundle-MatchingBundleExample.html) shows the full Bundle that a Record Linkage System or PPRL Client should return to a Data Owner. Will contain multiple Matching PPRL Patient resources.
