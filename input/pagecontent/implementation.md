@@ -2,7 +2,7 @@
 This page contains the implementation requirements for PPRL.
 
 #### Patient Resource
-The Patient Information System FHIR Server's Patient resources MUST provide the following attributes:
+The Patient Information System FHIR Server's Patient resources must support the following attributes, which are also declared must support by US Core:
 
 * birthDate
 * birthSex
@@ -13,9 +13,10 @@ The Patient Information System FHIR Server's Patient resources MUST provide the 
 * contact.name.family
 * address.line
 * address.postalCode
-* telecom[phoneNumber]
+* telecom[phone]
 * telecom[email]
-* The required patient attributes can also be seen in the [PPRLPatient Structure Definition](StructureDefinition-pprl-patient.html)
+
+A full description [PPRLPatient Structure Definition](StructureDefinition-pprl-patient.html). The profile sets the cardinality of some data elements to be required, with greater data requirements than US Core.
 
 #### Bulk FHIR
 The Patient Information System FHIR Server MUST implement a FHIR Bulk Data Exporter that exports all patients desired to be included in the PPRL process. It should export the patients in the NDJSON format prescribed by [FHIR Bulk Data Export Requirements](https://hl7.org/fhir/uv/bulkdata/).
@@ -31,7 +32,7 @@ For users of the CODI Data Model, the PPRL Patient Profile corresponds to the CO
 | IDENTIFIER | PARENT_FAMILY_NAME | contact.name.family | PPRLPatient | Optional |
 | IDENTIFIER | HOUSEHOLD_STREET_ADDRESS | address.line | PPRLPatient | |
 | IDENTIFIER | HOUSEHOLD_ZIP | address.postalCode | PPRLPatient | |
-| IDENTIFIER | HOUSEHOLD_PHONE | telecom[phoneNumber] | PPRLPatient | Optional |
+| IDENTIFIER | HOUSEHOLD_PHONE | telecom[phone] | PPRLPatient | Optional |
 | IDENTIFIER | HOUSEHOLD_EMAIL | telecom[email] | PPRLPatient | Optional |
 | IDENTIFIER | BIRTH_DATE | birthDate | PPRLPatient | |
 | IDENTIFIER | SEX | birthSex | PPRLPatient | |

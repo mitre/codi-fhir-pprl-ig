@@ -7,11 +7,7 @@ During the PPRL process, PII is obfuscated in a series of prescribed steps prior
 
 <img src="pprl-blind-matching.png" alt="PPRL Blind Matching" width="100%" align="left" style="margin: 0px 250px 0px 0px;" />
 
-This Implementation Guide specifies how a PPRL process can be conducted when Data Owners retain patient information in FHIR enabled systems. It specifies the processes for
-
-This Implementation Guide serves the pupose of defining the requirements that patient data stored by Data Owners must meet for PPRL.
-
-The PPRLPatient requirements are derived from USCore except that certain identifying information and attributes are now required instead of optional. Visit the [PPRLPatient Structure Definition](StructureDefinition-pprl-patient.html) Differential Table to see which attributes are required. You may also visit the [Implementation and Conformance Requirements](implementation.html).
+This Implementation Guide specifies how a PPRL process can be conducted when Data Owners retain patient information in FHIR enabled systems. It specifies the processes for extracting information for obfuscation as well as how linkage information can be communicated back to a Data Owner. It is expected that this IG would be used in a setting such as a distributed health data networks (DHDNs). For more information on using FHIR in DHDNs, consult the [Making EHR Data More available for Research and Public Health (MedMorph) IG](http://hl7.org/fhir/us/medmorph/2021JAN/index.html).
 
 ### Roles and Systems
 #### Roles
@@ -97,6 +93,12 @@ As with any record matching process, poor source data quality will likely degrad
 
 PPRL will often require greater computational resources than a plain text record linkage process.
 
+### Related Technologies
+
+As stated previously, it is expected that this IG would likely be used in the context of a DHDN. Executing research queries in the context of a DHDN is covered in the [MedMorph Research Use Cases](http://hl7.org/fhir/us/medmorph/2021JAN/researchusecases.html). It is expected that Patient Information System would play a role similar to the [MedMorph Knowledge Artifact Repository](http://hl7.org/fhir/us/medmorph/2021JAN/CapabilityStatement-medmorph-knowledge-artifact-repository.html). The PPRL Client plays a role similar to the [MedMorph Trust Service Provider](http://hl7.org/fhir/us/medmorph/2021JAN/CapabilityStatement-medmorph-trust-service-provider.html). While functionality described in this IG is similar to the [Bundle De-identify](http://hl7.org/fhir/us/medmorph/2021JAN/OperationDefinition-Bundle-de-identify.html) and [Bundle Re-identify](http://hl7.org/fhir/us/medmorph/2021JAN/OperationDefinition-Bundle-re-identify.html) operations, at the time of writing, these features do not support requirements of a PPRL process. Namely, Bundle De-identify (obfuscation) does not provide a method for providing a pepper value. Bundle re-identify does not provide a way of supplying context to a trust service. These issues have been raised to the MedMorph team through [ballot comments](https://jira.hl7.org/browse/FHIR-30326). Future revisions may allow for the consolidation of concepts between the IGs.
+
+The authors of this IG are aware of the [Patient.link](http://www.hl7.org/implement/standards/fhir/patient-definitions.html#Patient.link) data element. This data element allows a Patient resource to describe a linkage to another Patient resource. While this element is useful in a traditional record linkage system, use of this data element in a PPRL context would have the potential of unwanted information disclosure. In particular, one Data Owner in a linkage process may be made aware of one of their patient's records at another Data Owner, a situation that is prevented from happening in a PPRL process. Due to this, the Patient.link data element was not used.
+
 ### Credits
 Authored by the CODI project at MITRE, sponsored by the CDC.
 
@@ -116,4 +118,3 @@ This IG was authored by the MITRE Corporation using [FHIR Shorthand (FSH)](http:
 | | The MITRE Corporation |
 | | rscalfani@mitre.org |
 
-The PPRL FHIR Implementation Guide was developed by the [MITRE Corporation](http://www.mitre.org) under the Community and Clinical Data Initative (CODI) sponsored by CDC.
