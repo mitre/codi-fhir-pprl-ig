@@ -51,7 +51,7 @@ The steps of this process are shown below:
 <img src="fhir-pprl-process.png" alt="PPRL sequence diagram" width="100%" align="left" style="margin: 0px 250px 0px 0px;" />
 
 #### Pepper Generation
-The key escrow is the organization responsible for creating the pepper or encryption key that data owners and data providers will use in the de-identification process. Given that the de-identification process relies on the pepper remaining secure, it is critical that it be created and distributed appropriately.
+The key escrow is the organization responsible for creating the pepper that data owners and data providers will use in the de-identification process. Given that the de-identification process relies on the pepper remaining secure, it is critical that it be created and distributed appropriately.
 
 The exact mechanism for generation of the pepper value is not specified by this implementation guide. The most important aspect of the pepper is that it is sufficiently random to prevent re-identification through brute force computation. As such, the key escrow must use a Cryptographically Secure Pseudo-Random Number Generator (CSPRNG) as the source for the pepper value. The Open Web Application Security Project provides a [Cryptographic Storage Cheat Sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Cryptographic_Storage_Cheat_Sheet.md#secure-random-number-generation) with references to appropriate CSPRNGs.
 
@@ -75,7 +75,7 @@ Once all obfuscated information has been received from Data Owners at the Linkag
 
 #### Communicate Linkage Information with Data Owners
 
-The Record Linkage System will generate matching information to be shared with Data Owners. Match information shall be represented as a [FHIR Bundle](https://www.hl7.org/fhir/bundle.html) that conforms to the [Matching Bundle Profile](StructureDefinition-matching-bundle.html). The Matching Bundle shall contain Patient resources, the same set of resources that were provided to the matching process. The Record Linkage System or PPRL Client is responsible for modifying those resources such that their identifier data element contains a new linking identifier. An example of this can be seen by comparing the [PPRL Patient Example](Patient-PPRLPatientExample.html) with the [Matching PPRL Patient Example](Patient-12345.html). Note the new identifier in the `https://example-linkage-agent.org/linkage-id` system.
+The Record Linkage System will generate matching information to be shared with Data Owners. Match information shall be represented as a [FHIR Bundle](https://www.hl7.org/fhir/bundle.html) that conforms to the [Matching Bundle Profile](StructureDefinition-matching-bundle.html). The Matching Bundle shall contain Patient resources, the same set of resources that were provided to the matching process. The Record Linkage System or PPRL Client is responsible for modifying those resources such that their identifier data element contains a new linking identifier. An example of this can be seen by comparing the [PPRL Patient Example](Patient-PPRLPatientExample.html) with the [Matching PPRL Patient Example](Patient-12345.html). Note the new identifier in the `https://example-linkage-agent.org/linkage-id` system. These examples contain PII because these resources will be created and used within the boundaries of the Data Owner.
 
 ### FHIR Bulk Data
 
@@ -87,7 +87,7 @@ FHIR Bulk Patient Data Requirements.
 ### Known Limitations
 PPRL is intended to preserve the privacy of PII while enabling matching. However, like other record matching techniques, the PPRL process has weaknesses that can impact the process.
 
-An ideal PPRL process is constructed to protect the privacy of individuals. This privacy may be compromised through the disclosure of the secret value, or an obfuscation process that does not sufficiently de-identify the source data. Construction of appropriate obfuscation techniques is outside the scope of this IG.
+An ideal PPRL process is constructed to protect the privacy of individuals. This privacy may be compromised through the disclosure of the pepper, or an obfuscation process that does not sufficiently de-identify the source data. Construction of appropriate obfuscation techniques is outside the scope of this IG.
 
 As with any record matching process, poor source data quality will likely degrade linkage quality. Some techniques used to work with identity data, such as files of nicknames or looking for month/day swaps are unavailable using a PPRL process.
 
